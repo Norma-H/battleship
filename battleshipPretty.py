@@ -46,10 +46,12 @@ class Board(object):
         return output
 
 def create_board():
-    df = DataFrame(index=list('abcdefghij'),columns=list(range(1,11)))
+    df = DataFrame(index=list('abcdefghij'), columns=list(range(1, 11)))
     return df
 
 board1 = create_board()
+board2 = create_board()
+
 ship1 = Ship('Carrier')
 ship2 = Ship('Battleship')
 ship3 = Ship('Destroyer')
