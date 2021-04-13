@@ -1,3 +1,8 @@
+#!/usr/bin/env python3
+
+import pandas as pd
+from pandas import Series, DataFrame
+
 class Ship(object):
     def __init__(self, name):
         self.ship_name = name
@@ -40,6 +45,11 @@ class Board(object):
             output += '\n'
         return output
 
+def create_board():
+    df = DataFrame(index=list('abcdefghij'),columns=list(range(1,11)))
+    return df
+
+board1 = create_board()
 ship1 = Ship('Carrier')
 ship2 = Ship('Battleship')
 ship3 = Ship('Destroyer')
