@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
 
-import pandas as pd
-from pandas import Series, DataFrame
-
 class Ship(object):
     def __init__(self, name):
         self.ship_name = name
@@ -15,6 +12,7 @@ class Ship(object):
 
     def __repr__(self):
         return str(self.ship_name)
+
 
 class Board(object):
     def __init__(self, player_name):
@@ -45,12 +43,18 @@ class Board(object):
             output += '\n'
         return output
 
-def create_board():
-    df = DataFrame(index=list('abcdefghij'), columns=list(range(1, 11)))
-    return df
 
-board1 = create_board()
-board2 = create_board()
+def launches(victim, target):
+    for key,value in victim.ships.items():
+        if target in value:
+            value.remove(target)
+            victim.ships[key] = value
+            print("That was a hit!")
+            if value == []:
+                del(victim.ships[key])
+                print(f"You sunk {victim.name}'s {key}!")
+                break
+
 
 ship1 = Ship('Carrier')
 ship2 = Ship('Battleship')
@@ -75,19 +79,7 @@ for one_player in [player1, player2]:
     print(f'Here are the locations of your ships:\n{one_player}\n')
 
 print("Let's play!\n")
-hits_by_1 = set()  # instead, would want to keep track of all guesses to tell the user if they repeated
-hits_by_2 = set()
-
-def launches(victim, target):
-    for key,value in victim.ships.items():
-        if target in value:
-            value.remove(target)
-            victim.ships[key] = value
-            print("That was a hit!")
-            if value == []:
-                del(victim.ships[key])
-                print(f"You sunk {victim.name}'s {key}!")
-                break
+# would want to keep track of all guesses to tell the user if they repeated
 
 while True:
     target1 = input(f"{player1.name}, what's your next target? ")
