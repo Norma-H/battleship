@@ -6,7 +6,9 @@
     or present while that player is entering the information through the terminal.
     When the game starts, the players take turns entering locations to launch a missile and try to hit the opposing
     player's ships.
-    The first player to hit all the locations and sink all the opponent's ships, wins the game.'''
+    The first player to hit all the locations and sink all the opponent's ships, wins the game.
+    There are a bunch of "to-do" comments for additional features to be added in the future. This is a working minimum
+    viable product. '''
 
 
 class Ship(object):
@@ -38,8 +40,8 @@ class Board(object):
         self.ships = {'Carrier': [], 'Battleship': [], 'Destroyer': [], 'Submarine': [], 'Patrol Boat': []}
 
     def add_ship_locations(self, ship, *locations):
-        # need to also confirm that (1) a location was not used for another ship in the same fleet and
-        # (2) the locations for a specific ship are consecutive
+        # TODO: confirm that (1) a location was not used for another ship in the same fleet and
+        # TODO: (2) the locations for a specific ship are consecutive
         if ship.ship_length == len(locations):
             for one_location in locations:
                 if one_location not in self.board:
@@ -83,14 +85,19 @@ def set_up_locations(player1, player2, ship1, ship2, ship3, ship4, ship5):
             locations = input(f'{one_player.name}, enter {one_ship.length()} locations for {one_ship.ship_name}: ').strip().split(' ')
             one_player.add_ship_locations(one_ship, *locations)
             # the following line is if an invalid location is entered.
-            # this needs to be continuous until the locations entered are valid and correct number
+            # TODO: needs to be continuous loop until the locations and number of locations entered are valid
             if one_player.ships[one_ship.ship_name] == []:
                 locations = input(f'{one_player.name}, enter {one_ship.length()} locations for {one_ship.ship_name}: ').strip().split(' ')
                 one_player.add_ship_locations(one_ship, *locations)
-        # print(f'Here are the locations of your ships:\n{one_player}\n')
+        # print(f'Here are the locations of your ships:\n{one_player}\n') #--prints out all entered locations to screen
 
 
 def play_game(player1, player2):
+    ''' This function is to play the game.
+        It takes in both players' board information.
+        It asks each player one at a time for a next target (launch) towards their opponent and calls the launches
+        function.
+        It returns a string indicating the player who has won the game. '''
     while True:
         target1 = input(f"{player1.name}, what's your next target? ")
         launches(player2, target1)
@@ -120,7 +127,7 @@ def main():
     set_up_locations(player1, player2, ship1, ship2, ship3, ship4, ship5)
 
     print("Let's play!\n")
-    # would want to keep track of all guesses to tell the user if they repeated
+    # TODO: keep track of all guesses to tell the user if they repeated
 
     game_outcome = play_game(player1, player2)
 
