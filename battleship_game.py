@@ -68,13 +68,14 @@ def launches(victim, target):
         if target in locations:
             locations.remove(target)
             victim.ships[key] = locations
-            print("HIT!")
+            result = "HIT!"
             if not locations:
                 del(victim.ships[key])
-                print(f"You sunk {victim.name}'s {key}!")
-                break
-        else:
-            print("MISS.")
+                result = f"You sunk {victim.name}'s {key}!"
+            return result
+    else:
+        result = "MISS."
+        return result
 
 
 def set_up_locations(player1, player2, ship1, ship2, ship3, ship4, ship5):
@@ -96,12 +97,14 @@ def play_game(player1, player2):
     while True:
         # TODO: keep track of all guesses to tell the user if they repeated
         target1 = input(f"{player1.name}, what's your next target? ")
-        launches(player2, target1)
+        result = launches(player2, target1)
+        print(result)
         if player2.ships == {}:
             winner = player1.name
             break
         target2 = input(f"{player2.name}, what's your next target? ")
-        launches(player1, target2)
+        result = launches(player1, target2)
+        print(result)
         if player1.ships == {}:
             winner = player2.name
             break
