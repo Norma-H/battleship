@@ -15,8 +15,9 @@ class Ship(object):
     ''' This class is to initialize each of the 5 types of ships.
         One ship should be initialized at a time.
         This class holds the name and length for a given ship.
-        The following are valid ship names: Carrier, Battleship, Destroyer, Submarine, Patrol Baot. '''
+        The following are valid ship names: Carrier, Battleship, Destroyer, Submarine, Patrol Boat. '''
     def __init__(self, name):
+        # TODO: verify that the ship name passed to this Class is one of the 5 valid names
         self.ship_name = name
         self.ship_length = {'Carrier': 5, 'Battleship': 4, 'Destroyer': 3, 'Submarine': 3, 'Patrol Boat': 2}
 
@@ -38,8 +39,9 @@ class Board(object):
         self.ships = {'Carrier': [], 'Battleship': [], 'Destroyer': [], 'Submarine': [], 'Patrol Boat': []}
 
     def add_ship_locations(self, ship, *locations):
-        # TODO: confirm that (1) a location was not used for another ship in the same fleet and
-        # TODO: (2) the locations for a specific ship are consecutive
+        # TODO: confirm that (1) a location was not used for another ship in the same fleet, and
+        # TODO: (2) the locations for a specific ship are consecutive.
+        # TODO: move print statement out of the Class and have this function return a value
         if ship.ship_length[ship.ship_name] == len(locations):
             for one_location in locations:
                 if one_location not in self.board:
@@ -51,6 +53,12 @@ class Board(object):
             print(f'Please enter {ship.ship_length[ship.ship_name]} locations for {ship.ship_name} ship.')
 
     def __repr__(self):
+        ''' The output for this function looks like the following:
+            Carrier: [5 printed locations outside of a list]
+            Battleship: [4 printed locations outside of a list]
+            Destroyer: [3 printed locations outside of a list]
+            Submarine: [3 printed locations outside of a list]
+            Patrol Boat: [2 printed locations outside of a list] '''
         output = ''
         for ship_key, ship_values in self.ships.items():
             output += f'{ship_key}: '
@@ -64,6 +72,7 @@ def launches(victim, target):
     ''' This function takes in the player that is being attacked and the target by the opponent.
         If the target is an accurate ship location, then that location is removed from the dictionary key.
         If it is the last location in the list and it is removed, then the ship is sunk. '''
+    # TODO: move this function into the Board Class
     for key, locations in victim.ships.items():
         if target in locations:
             locations.remove(target)
@@ -79,6 +88,7 @@ def launches(victim, target):
 
 def set_up_locations(player1, player2, ship1, ship2, ship3, ship4, ship5):
     ''' This function asks each player to enter locations for each of their ships and adds them to their board.'''
+    # TODO: move this function into the Board class
     for one_player in [player1, player2]:
         for one_ship in [ship1, ship2, ship3, ship4, ship5]:
             while not one_player.ships[one_ship.ship_name]:
@@ -111,7 +121,6 @@ def play_game(player1, player2):
 
 
 def main():
-    # TODO: ask the user to enter in the name of the ship they want to initiate next (and verify it is a valid name/ship for the game)
     ship1 = Ship('Carrier')
     ship2 = Ship('Battleship')
     ship3 = Ship('Destroyer')
