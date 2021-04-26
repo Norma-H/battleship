@@ -1,8 +1,5 @@
-from battleshipPretty import create_board
+from battleship_game import Ship.length
 import pandas as pd
 from pandas import DataFrame
 
-def test_create_board():
-    board = DataFrame(index=list('abcdefghij'),columns=list(range(1,11)))
-    df = create_board()
-    assert pd.testing.assert_frame_equal(board,df) == None
+def test_SHip_length():

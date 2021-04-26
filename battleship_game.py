@@ -18,12 +18,10 @@ class Ship(object):
         The following are valid ship names: Carrier, Battleship, Destroyer, Submarine, Patrol Baot. '''
     def __init__(self, name):
         self.ship_name = name
+        self.ship_length = {'Carrier': 5, 'Battleship': 4, 'Destroyer': 3, 'Submarine': 3, 'Patrol Boat': 2}
 
     def length(self):
-        lengths = {'Carrier': 5, 'Battleship': 4, 'Destroyer': 3, 'Submarine': 3, 'Patrol Boat': 2}
-        if self.ship_name in lengths.keys():
-            self.ship_length = lengths[self.ship_name]
-        return self.ship_length
+        return self.ship_length[self.ship_name]
 
     def __repr__(self):
         return str(self.ship_name)
@@ -42,7 +40,7 @@ class Board(object):
     def add_ship_locations(self, ship, *locations):
         # TODO: confirm that (1) a location was not used for another ship in the same fleet and
         # TODO: (2) the locations for a specific ship are consecutive
-        if ship.ship_length == len(locations):
+        if ship.ship_length[ship.ship_name] == len(locations):
             for one_location in locations:
                 if one_location not in self.board:
                     print(f'{one_location} is an invalid location. Please re-enter your locations.')
@@ -50,8 +48,7 @@ class Board(object):
             else:
                 self.ships[ship.ship_name] = [one_location for one_location in locations]
         else:
-            print(f'Please enter {ship.ship_length} locations for {ship.ship_name} ship.')
-        return self.ships
+            print(f'Please enter {ship.ship_length[ship.ship_name]} locations for {ship.ship_name} ship.')
 
     def __repr__(self):
         output = ''
@@ -67,12 +64,12 @@ def launches(victim, target):
     ''' This function takes in the player that is being attacked and the target by the opponent.
         If the target is an accurate ship location, then that location is removed from the dictionary key.
         If it is the last location in the list and it is removed, then the ship is sunk. '''
-    for key,value in victim.ships.items():
-        if target in value:
-            value.remove(target)
-            victim.ships[key] = value
+    for key, locations in victim.ships.items():
+        if target in locations:
+            locations.remove(target)
+            victim.ships[key] = locations
             print("That was a hit!")
-            if value == []:
+            if not locations:
                 del(victim.ships[key])
                 print(f"You sunk {victim.name}'s {key}!")
                 break
@@ -82,12 +79,8 @@ def set_up_locations(player1, player2, ship1, ship2, ship3, ship4, ship5):
     ''' This function asks each player to enter locations for each of their ships and adds them to their board.'''
     for one_player in [player1, player2]:
         for one_ship in [ship1, ship2, ship3, ship4, ship5]:
-            locations = input(f'{one_player.name}, enter {one_ship.length()} locations for {one_ship.ship_name}: ').strip().split(' ')
-            one_player.add_ship_locations(one_ship, *locations)
-            # the following line is if an invalid location is entered.
-            # TODO: needs to be continuous loop until the locations and number of locations entered are valid
-            if one_player.ships[one_ship.ship_name] == []:
-                locations = input(f'{one_player.name}, enter {one_ship.length()} locations for {one_ship.ship_name}: ').strip().split(' ')
+            while not one_player.ships[one_ship.ship_name]:
+                locations = input(f'{one_player.name}, enter {one_ship.ship_length[one_ship.ship_name]} locations for {one_ship.ship_name} (separated by spaces): ').strip().split(' ')
                 one_player.add_ship_locations(one_ship, *locations)
         # print(f'Here are the locations of your ships:\n{one_player}\n') #--prints out all entered locations to screen
 
@@ -99,6 +92,7 @@ def play_game(player1, player2):
         function.
         It returns a string indicating the player who has won the game. '''
     while True:
+        # TODO: keep track of all guesses to tell the user if they repeated
         target1 = input(f"{player1.name}, what's your next target? ")
         launches(player2, target1)
         if player2.ships == {}:
@@ -113,6 +107,7 @@ def play_game(player1, player2):
 
 
 def main():
+    # TODO: ask the user to enter in the name of the ship they want to initiate next (and verify it is a valid name/ship for the game)
     ship1 = Ship('Carrier')
     ship2 = Ship('Battleship')
     ship3 = Ship('Destroyer')
@@ -127,7 +122,6 @@ def main():
     set_up_locations(player1, player2, ship1, ship2, ship3, ship4, ship5)
 
     print("Let's play!\n")
-    # TODO: keep track of all guesses to tell the user if they repeated
 
     game_outcome = play_game(player1, player2)
 
