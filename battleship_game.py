@@ -68,11 +68,13 @@ def launches(victim, target):
         if target in locations:
             locations.remove(target)
             victim.ships[key] = locations
-            print("That was a hit!")
+            print("HIT!")
             if not locations:
                 del(victim.ships[key])
                 print(f"You sunk {victim.name}'s {key}!")
                 break
+        else:
+            print("MISS.")
 
 
 def set_up_locations(player1, player2, ship1, ship2, ship3, ship4, ship5):
