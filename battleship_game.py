@@ -74,8 +74,7 @@ def launches(victim, target):
                 result = f"You sunk {victim.name}'s {key}!"
             return result
     else:
-        result = "MISS."
-        return result
+        return "MISS."
 
 
 def set_up_locations(player1, player2, ship1, ship2, ship3, ship4, ship5):
